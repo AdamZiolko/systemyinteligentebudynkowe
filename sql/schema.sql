@@ -21,7 +21,7 @@ USE `user-registration` ;
 -- Table `user-registration`.`ListaPomieszczen`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `user-registration`.`ListaPomieszczen` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(90) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -31,7 +31,7 @@ ENGINE = InnoDB;
 -- Table `user-registration`.`Gniazdka`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `user-registration`.`Gniazdka` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(90) NULL,
   `description` VARCHAR(90) NULL,
   `properties` VARCHAR(90) NULL,
@@ -69,7 +69,7 @@ DEFAULT CHARACTER SET = latin1;
 -- Table `user-registration`.`HistoriaUzytkowania`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `user-registration`.`HistoriaUzytkowania` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `id_user` INT NOT NULL,
   `name` VARCHAR(90) NULL,
   `Gniazdka_id` INT NOT NULL,

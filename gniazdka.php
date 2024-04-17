@@ -1,6 +1,8 @@
 <?php
 require_once 'lib/DataSource.php';
 
+
+
 $ds = new Phppot\DataSource();
 $conn = $ds->getConnection();
 
@@ -15,20 +17,14 @@ if (isset($_SESSION["username"]) && $_SESSION["role"] == "admin") {
     header("Location: $url");
 }
 
+$room_id = $_GET['room_id'];
 
-function getRoomList($conn) {
-    $sql = "SELECT l.id, l.name, 
-            (SELECT COUNT(*) FROM Gniazdka g WHERE g.ListaPomieszczen_id = l.id) as total_outlets, 
-            (SELECT COUNT(*) FROM Gniazdka g WHERE g.ListaPomieszczen_id = l.id AND g.state = 1) as active_outlets 
-            FROM ListaPomieszczen l";
-    $result = $conn->query($sql);
-    return $result;
-}
+$room_sql = "SELECT name FROM ListaPomieszczen WHERE id = $room_id";
+$room_result = $conn->query($room_sql);
+$room = $room_result->fetch_assoc();
+$room_name = $room['name'];
 
-
-
-
-$sql = "SELECT id, name FROM ListaPomieszczen";
+$sql = "SELECT id, name, description, properties, state FROM Gniazdka WHERE ListaPomieszczen_id = $room_id";
 $result = $conn->query($sql);
 ?>
 
@@ -37,34 +33,31 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
     include 'admin-header.php';
 }
 ?>
+<div class="container pd-5">
 
-<div class="container">
-
-<div class="page-content mt-5 mb-5">
-    <h2 class="font-weight-bold text-primary mt-5">Lista Pomieszczeń</h2>
-    <table id="roomTable" class="table table-bordered shadow">
+<div class="page-content mt-4 mb-4">
+    <h2 class="font-weight-bold text-primary mt-5">Lista Gniazdek dla pokouju <?php echo $room_name; ?></h2>
+    <table id="gniazdkaTable" class="table table-bordered shadow">
         <thead class="bg-primary text-white">
             <tr>
                 <th>ID</th>
                 <th>Nazwa</th>
-                <th>Liczba Gniazdek</th>
-                <th>Liczba Aktywnych Gniazdek</th>
-                <th></th>
+                <th>Opis</th>
+                <th>Właściwości</th>
+                <th>Stan</th>
             </tr>
         </thead>
         <tbody>
             <?php 
-            $result = getRoomList($conn);
-
             if ($result->num_rows > 0) {
                 // output data of each row
                 while($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>".$row["id"]."</td>";
                     echo "<td>".$row["name"]."</td>";
-                    echo "<td>".$row["total_outlets"]."</td>";
-                    echo "<td>".$row["active_outlets"]."</td>";
-                    echo "<td class='text-center'><a href='gniazdka.php?room_id=".$row["id"]."' class='btn btn-light btn-lg rounded-pill'>Pokaż Gniazdka</a></td>";
+                    echo "<td>".$row["description"]."</td>";
+                    echo "<td>".$row["properties"]."</td>";
+                    echo "<td>".$row["state"]."</td>";
                     echo "</tr>";
                 }
             } else {
@@ -77,7 +70,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
 
 <script>
 $(document).ready( function () {
-    $('#roomTable').DataTable();
+    $('#gniazdkaTable').DataTable();
 } );
 </script>
 
