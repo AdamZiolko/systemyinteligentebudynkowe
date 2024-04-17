@@ -35,8 +35,8 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
 ?>
 <div class="container pd-5">
 
-<div class="page-content mt-4 mb-4">
-    <h2 class="font-weight-bold text-primary mt-5">Lista Gniazdek dla pokouju <?php echo $room_name; ?></h2>
+<div class="page-content mt-5 mb-4">
+    <h2 class="font-weight-bold text-primary mt-5">Lista gniazdek dla pokoju <?php echo $room_name; ?></h2>
     <table id="gniazdkaTable" class="table table-bordered shadow">
         <thead class="bg-primary text-white">
             <tr>
