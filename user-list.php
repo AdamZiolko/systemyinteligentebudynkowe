@@ -107,8 +107,8 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
 ?>
 
 
-    <div class="row justify-content-center">
-        <div class="col-12">
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 mt-5">
             <div class="card p-4 border border-primary shadow">
                 <div class="card-header bg-primary text-white py-3">
                     <h2 class="mb-0 font-weight-bold">Dodaj nowego użytkownika</h2>
@@ -177,7 +177,9 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
                                             <input type="number" id="user_id" name="user_id" required class="form-control py-2">
                                         </div>
                                     </div>
-                                    <input type="submit" name="delete_user" value="Usuń użytkownika" class="btn btn-danger btn-lg btn-block rounded-pill">
+                                    <div style="width: 50%; margin: auto;">
+                                        <input type="submit" name="delete_user" value="Usuń użytkownika" class="btn btn-danger btn-lg btn-block rounded-pill">
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -209,7 +211,9 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
                             </select>
                         </div>
                     </div>
-                    <input type="submit" name="edit_user" value="Aktualizuj" class="btn btn-warning btn-lg btn-block rounded-pill">
+                    <div style="width: 50%; margin: auto;">
+                        <input type="submit" name="edit_user" value="Aktualizuj" class="btn btn-warning btn-lg btn-block rounded-pill">
+                    </div>
                     </form>
                 </div>
             </div>
@@ -217,7 +221,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
     </div>
 </div>
 
-<div class="page-content mt-4">
+<div class="page-content mt-4 mb-4">
     <h2 class="font-weight-bold text-primary">Lista użytkowników</h2>
     <table id="userTable" class="table table-bordered shadow">
         <thead class="bg-primary text-white">
@@ -242,7 +246,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
                 <td><?php echo $user['email']; ?></td>
                 <td><?php echo $user['apartment_id']; ?></td>
                 <td><?php echo $user['role']; ?></td>
-                <td>
+                <td class="text-center">
                     <a href="edit_user.php?user_id=<?php echo $user['id']; ?>" class="btn btn-light btn-lg rounded-pill">Edit</a>
                 </td>
             </tr>

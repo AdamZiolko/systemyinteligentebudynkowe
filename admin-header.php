@@ -6,30 +6,27 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
-<div class="phppot-container p-4 col-12">
-    <div class="page-header py-3 bg-primary text-white text-center">
-        <span class="login-signup"><a href="logout.php" class="btn btn-light btn-lg rounded-pill">Logout</a></span>
-    </div>
-    <div class="page-content py-3 text-center">
-        <h2>Welcome <?php echo $username;?></h2>
-    </div>
-    <div class="page-content">
-        <h2 class="font-weight-bold text-primary text-center">Admin Panel</h2>
-        <ul class="nav nav-pills mb-3 bg-light p-3 rounded shadow justify-content-center">
-            <li class="nav-item p-2">
-                <a class="nav-link text-dark" href="user-list.php">User List</a>
+<div class="phppot-container col-12 fixed-top bg-dark py-2 mb-5">
+    <div class="page-content mb-0">
+        <ul class="nav nav-pills justify-content-end mb-0">
+            <li class="nav-item">
+                <a class="nav-link text-white py-2" style="font-size: 1rem;" href="user-list.php">Lista użytkowników</a>
             </li>
-            <li class="nav-item p-2">
-                <a class="nav-link text-dark" href="apartment-list.php">Apartment List</a>
+            <li class="nav-item">
+                <a class="nav-link text-white py-2" style="font-size: 1rem;" href="apartment-list.php">Lista apartementów</a>
             </li>
-            <li class="nav-item p-2">
-                <a class="nav-link text-dark" href="change-history.php">Change History</a>
+            <li class="nav-item">
+                <a class="nav-link text-white py-2" style="font-size: 1rem;" href="change-history.php">Historia zmian</a>
             </li>
-            <li class="nav-item p-2">
-                <a class="nav-link text-dark" href="room-list.php">Room List</a>
+            <li class="nav-item">
+                <a class="nav-link text-white py-2" style="font-size: 1rem;" href="room-list.php">Lista pomieszczeń</a>
             </li>
-            <li class="nav-item p-2">
-                <a class="nav-link text-dark" href="admin-panel.php">Główna Strona</a>
+            <li class="nav-item">
+                <a class="nav-link text-white py-2" style="font-size: 1rem;" href="admin-panel.php">Główna Strona</a>
+            </li>
+            <li class="nav-item">
+                <a href="logout.php" class="btn btn-light btn-sm rounded-pill py-2" style="font-size: 1rem;">Wyloguj</a>
             </li>
         </ul>
     </div>
+</div>

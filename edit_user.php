@@ -83,8 +83,8 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
 }
 ?>
 
-<div class="page-content container mt-5">
-    <h2 class="mb-3">Edytuj użytkownika</h2>
+<div class="page-content container mt-5 pd-6">
+    <h2 class="mb-3 mt-5">Edytuj użytkownika</h2>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <div class="form-group">
             <label for="username">Nazwa użytkownika:</label>
