@@ -25,7 +25,36 @@ function getRoomList($conn) {
     return $result;
 }
 
+function addRoom($conn, $roomName) {
+    $stmt = $conn->prepare("INSERT INTO ListaPomieszczen (name) VALUES (?)");
+    $stmt->bind_param("s", $roomName);
+    $stmt->execute();
+    if ($stmt->affected_rows > 0) {
+        echo "Pomieszczenie zostało dodane.";
+    } else {
+        echo "Nie udało się dodać pomieszczenia.";
+    }
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit_room"])) {
+    $roomName = $_POST["room"];
+    addRoom($conn, $roomName);
+}
 
+function deleteRoom($conn, $roomName) {
+    $stmt = $conn->prepare("DELETE FROM ListaPomieszczen WHERE name = ?");
+    $stmt->bind_param("s", $roomName);
+    $stmt->execute();
+    if ($stmt->affected_rows > 0) {
+        echo "Pomieszczenie zostało usunięte.";
+    } else {
+        echo "Nie udało się usunąć pomieszczenia.";
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_room"])) {
+    $roomToDelete = $_POST["roomToDelete"];
+    deleteRoom($conn, $roomToDelete);
+}
 
 
 $sql = "SELECT id, name FROM ListaPomieszczen";
@@ -64,7 +93,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'user') {
                     echo "<td>".$row["name"]."</td>";
                     echo "<td>".$row["total_outlets"]."</td>";
                     echo "<td>".$row["active_outlets"]."</td>";
-                    echo "<td class='text-center'><a href='gniazdka.php?room_id=".$row["id"]."' class='btn btn-light btn-lg rounded-pill'>Pokaż Gniazdka</a></td>";
+                    echo "<td class='text-center'><a href='gniazdka-user.php?room_id=".$row["id"]."' class='btn btn-light btn-lg rounded-pill'>Pokaż Gniazdka</a></td>";
                     echo "</tr>";
                 }
             } else {
@@ -81,6 +110,29 @@ $(document).ready( function () {
 } );
 </script>
 
-<?php
-$conn->close();
-?>
+<div class="container">
+    <div class="page-content mt-5 pd-6">
+        <h2 class="mb-3 mt-5">Dodaj pomieszczenie</h2>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <div class="form-group">
+                <label for="room">Nazwa pomieszczenia:</label>
+                <input type="text" name="room" class="form-control" required>
+            </div>
+            <input type="submit" name="edit_room" class="btn btn-primary" value="Dodaj pomieszczenie">
+        </form>
+    </div>
+    <div class="page-content mt-5 pd-6">
+        <h2 class="mb-3 mt-5">Usuń pomieszczenie</h2>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <div class="form-group">
+                <label for="room">Nazwa pomieszczenia:</label>
+                <input type="text" name="roomToDelete" class="form-control" required>
+            </div>
+            <input type="submit" name="delete_room" class="btn btn-danger" value="Usuń pomieszczenie">
+        </form>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
