@@ -39,33 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: gniazdka-user.php?room_id=$room_id");
         exit();
     }
-
-    // Obsługa dodawania gniazdka
-    if (isset($_POST["add_gniazdko"])) {
-        $gniazdko_name = $_POST["gniazdko_name"];
-        $gniazdko_description = $_POST["gniazdko_description"];
-        $gniazdko_properties = $_POST["gniazdko_properties"];
-        $gniazdko_state = 0;
-    
-        $sql = "INSERT INTO Gniazdka (name, description, properties, state, ListaPomieszczen_id) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssii", $gniazdko_name, $gniazdko_description, $gniazdko_properties, $gniazdko_state, $room_id);
-        $stmt->execute();
-        header("Location: gniazdka-user.php?room_id=$room_id");
-        exit();
-    }
-
-    // Obsługa usuwania gniazdka
-    if (isset($_POST["delete_gniazdko"])) {
-        $gniazdko_id_to_delete = $_POST["gniazdko_id_to_delete"];
-        $sql = "DELETE FROM Gniazdka WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $gniazdko_id_to_delete);
-        $stmt->execute();
-        header("Location: gniazdka-user.php?room_id=$room_id");
-        exit();
-    }
 }
+
 ?>
 
 <?php
@@ -114,35 +89,3 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'user') {
         </table>
     </div>
 
-    <!-- Formularz do dodawania gniazdka -->
-    <div class="page-content mt-5 mb-4">
-        <h2 class="font-weight-bold text-primary mt-5">Dodaj gniazdko</h2>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?room_id=<?php echo $room_id; ?>" method="post">
-            <div class="form-group">
-                <label for="gniazdko_name">Nazwa gniazdka:</label>
-                <input type="text" name="gniazdko_name" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="gniazdko_description">Opis gniazdka:</label>
-                <input type="text" name="gniazdko_description" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="gniazdko_properties">Właściwości gniazdka:</label>
-                <input type="text" name="gniazdko_properties" class="form-control" required>
-            </div>
-            <input type="submit" name="add_gniazdko" class="btn btn-primary" value="Dodaj gniazdko">
-        </form>
-    </div>
-
-    <!-- Formularz do usuwania gniazdka -->
-    <div class="page-content mt-5 mb-4">
-        <h2 class="font-weight-bold text-primary mt-5">Usuń gniazdko</h2>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?room_id=<?php echo $room_id; ?>" method="post">
-            <div class="form-group">
-                <label for="gniazdko_id_to_delete">ID gniazdka do usunięcia:</label>
-                <input type="text" name="gniazdko_id_to_delete" class="form-control" required>
-            </div>
-            <input type="submit" name="delete_gniazdko" class="btn btn-danger" value="Usuń gniazdko">
-        </form>
-    </div>
-</div>
