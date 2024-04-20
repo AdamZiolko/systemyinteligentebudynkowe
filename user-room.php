@@ -50,6 +50,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'user') {
                 <th>Liczba Gniazdek</th>
                 <th>Liczba Aktywnych Gniazdek</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -65,6 +66,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'user') {
                     echo "<td>".$row["total_outlets"]."</td>";
                     echo "<td>".$row["active_outlets"]."</td>";
                     echo "<td class='text-center'><a href='gniazdka-user.php?room_id=".$row["id"]."' class='btn btn-light btn-lg rounded-pill'>Pokaż Gniazdka</a></td>";
+                    echo "<td class='text-center'><a href='gniazdka.php?room_id=".$row["id"]."' class='btn btn-light btn-lg rounded-pill'>Harmonogram</a></td>";
                     echo "</tr>";
                 }
             } else {
