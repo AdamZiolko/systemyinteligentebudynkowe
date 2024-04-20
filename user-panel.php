@@ -25,9 +25,10 @@ if (isset($_SESSION["username"])) {
 <BODY>
 	<div class="phppot-container">
 		<div class="page-header">
-			<span class="login-signup"><a href="logout.php">Logout</a></span>
+		<?php
+    include 'user-header.php';
+?>
 		</div>
-		<div class="page-content">Welcome <?php echo $username;?></div>
 	</div>
 </BODY>
 </HTML>
