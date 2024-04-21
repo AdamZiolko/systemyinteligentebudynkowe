@@ -95,7 +95,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
                     echo "<td>".$row["total_outlets"]."</td>";
                     echo "<td>".$row["active_outlets"]."</td>";
                     echo "<td class='text-center'><a href='gniazdka.php?room_id=".$row["id"]."' class='btn btn-light btn-lg rounded-pill'>Pokaż Gniazdka</a></td>";
-                    echo "<td class='text-center'><a href='schedule.php?room_id=".$row["id"]."' class='btn btn-light btn-lg rounded-pill'>Harmonogram</a></td>";
+                    echo "<td class='text-center'><a href='schedule.php' class='btn btn-light btn-lg rounded-pill'>Harmonogram</a></td>";
 
                     echo "</tr>";
                 }

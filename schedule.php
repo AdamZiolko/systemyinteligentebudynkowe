@@ -31,47 +31,63 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
 }
 ?>
 
-<div class="container">
-    <div class="page-content mt-5 mb-5">
-        <h2 class="font-weight-bold text-primary mt-5">Harmonogram</h2>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="room_id">Wybierz pomieszczenie:</label>
-                <select name="room_id" class="form-control" required>
-                    <option value="">Wybierz...</option>
-                    <?php 
-                    $roomList = getRoomList($conn);
-                    if ($roomList->num_rows > 0) {
-                        while($row = $roomList->fetch_assoc()) {
-                            echo "<option value='".$row["id"]."'>".$row["name"]."</option>";
-                        }
-                    }
-                    ?>
-                </select>
-            </div>
-            <input type="submit" name="show_schedule" class="btn btn-primary" value="Pokaż harmonogram">
-        </form>
-
-        <?php 
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["show_schedule"])) {
-            $selectedRoomId = $_POST["room_id"];
-            $sql = "SELECT id, name FROM Gniazdka WHERE ListaPomieszczen_id = $selectedRoomId";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                echo "<h3>Gniazdka w wybranym pomieszczeniu:</h3>";
-                echo "<ul>";
-                while($row = $result->fetch_assoc()) {
-                    echo "<li>ID: " . $row["id"] . ", Nazwa: " . $row["name"] . "</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "Brak gniazdek w wybranym pomieszczeniu.";
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonogram</title>
+    <style>
+        .green-background {
+            background-color: green !important; /* Ustawiamy !important, aby przeważyć styl wewnątrz tagu */
         }
-        ?>
-    </div>
-</div>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-content mt-5 mb-5">
+            <h2 class="font-weight-bold text-primary mt-5">Harmonogram</h2>
+            <form id="roomForm">
+                <div class="form-group">
+                    <label for="room_id">Wybierz pomieszczenie:</label>
+                    <select name="room_id" id="room_id" class="form-control" required>
+                        <option value="">Wybierz...</option>
+                        <?php 
+                        $roomList = getRoomList($conn);
+                        if ($roomList->num_rows > 0) {
+                            while($row = $roomList->fetch_assoc()) {
+                                echo "<option value='".$row["id"]."'>".$row["name"]."</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </form>
 
+            <div id="gniazdkaContainer"></div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('#room_id').change(function(){
+            var roomId = $(this).val();
+            $.ajax({
+                url: 'getGniazdka.php',
+                type: 'POST',
+                data: {room_id: roomId},
+                success: function(response){
+                    $('#gniazdkaContainer').html(response);
+                }
+            });
+        });
+
+        // Obsługa kliknięcia na komórkę tabeli
+        $('#gniazdkaContainer').on('click', 'td.extra-column', function() {
+            $(this).toggleClass('green-background'); // Toggle dodaje klasę, jeśli jej nie ma, i usuwa, jeśli jest obecna
+        });
+    });
+    </script>
 </body>
 </html>
