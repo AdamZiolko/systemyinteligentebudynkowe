@@ -20,51 +20,47 @@ if (! empty($_POST["login-btn"])) {
 <HTML>
 <HEAD>
 <TITLE>Login</TITLE>
-<link href="assets/css/phppot-style.css" type="text/css"
-	rel="stylesheet" />
-<link href="assets/css/user-registration.css" type="text/css"
-	rel="stylesheet" />
+
+	<link rel="stylesheet" href="assets\css\bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="assets\css\bootstrap.min.js"></script>
+<script src="assets\css\popper.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
 <script src="vendor/jquery/jquery-3.3.1.js" type="text/javascript"></script>
 </HEAD>
 <BODY>
-	<div class="phppot-container">
-		<div class="sign-up-container">
-			<div class="login-signup">
-				<a href="user-registration.php">Sign up</a>
-			</div>
-			<div class="signup-align">
-				<form name="login" action="" method="post"
-					onsubmit="return loginValidation()">
-					<div class="signup-heading">Login</div>
-				<?php if(!empty($loginResult)){?>
-				<div class="error-msg"><?php echo $loginResult;?></div>
-				<?php }?>
-				<div class="row">
-						<div class="inline-block">
-							<div class="form-label">
-								Username<span class="required error" id="username-info"></span>
-							</div>
-							<input class="input-box-330" type="text" name="username"
-								id="username">
-						</div>
-					</div>
-					<div class="row">
-						<div class="inline-block">
-							<div class="form-label">
-								Password<span class="required error" id="login-password-info"></span>
-							</div>
-							<input class="input-box-330" type="password"
-								name="login-password" id="login-password">
-						</div>
-					</div>
-					<div class="row">
-						<input class="btn" type="submit" name="login-btn"
-							id="login-btn" value="Login">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header text-center">
+                    <h4>Login</h4>
+                    <a href="user-registration.php" class="btn btn-link">Rejestracja</a>
+                </div>
+                <div class="card-body">
+                    <form name="login" action="" method="post" onsubmit="return loginValidation()">
+                        <?php if(!empty($loginResult)){?>
+                        <div class="alert alert-danger"><?php echo $loginResult;?></div>
+                        <?php }?>
+                        <div class="form-group">
+                            <label for="username">Login<span class="required error" id="username-info"></span></label>
+                            <input class="form-control" type="text" name="username" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Hasło<span class="required error" id="login-password-info"></span></label>
+                            <input class="form-control" type="password" name="login-password" id="login-password">
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-primary btn-block" type="submit" name="login-btn" id="login-btn" value="Zaloguj">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 	<script>
 function loginValidation() {

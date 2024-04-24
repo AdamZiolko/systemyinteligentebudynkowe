@@ -24,6 +24,8 @@ if (isset($_SESSION["username"]) && $_SESSION["role"] == "admin") {
 if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
     include 'admin-header.php';
 }
+include 'main-page.php';
+
 ?>
 </BODY>
 </HTML>

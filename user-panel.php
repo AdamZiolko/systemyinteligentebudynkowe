@@ -23,12 +23,12 @@ if (isset($_SESSION["username"])) {
 	rel="stylesheet" />
 </HEAD>
 <BODY>
-	<div class="phppot-container">
-		<div class="page-header">
 		<?php
     include 'user-header.php';
+    include 'main-page.php';
 ?>
-		</div>
-	</div>
+
+
+
 </BODY>
 </HTML>
