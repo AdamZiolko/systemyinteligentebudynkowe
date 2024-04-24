@@ -12,9 +12,6 @@
                 <a class="nav-link text-white py-2" style="font-size: 1rem;" href="user-list.php">Lista użytkowników</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white py-2" style="font-size: 1rem;" href="apartment-list.php">Lista apartementów</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link text-white py-2" style="font-size: 1rem;" href="change-history.php">Historia zmian</a>
             </li>
             <li class="nav-item">
@@ -29,3 +26,4 @@
         </ul>
     </div>
 </div>
+<style> body { padding-top: 3rem;} </style>

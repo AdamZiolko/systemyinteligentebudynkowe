@@ -31,11 +31,35 @@ $result = $conn->query($sql);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obsługa zmiany stanu gniazdka
     if (isset($_POST['gniazdko_id'])) {
+        $username = $_SESSION["username"];
+        $sql = "SELECT id FROM tbl_member WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $user_id = (int) $user['id']; // Fetch the user id as an integer
+        
         $gniazdko_id = $_POST['gniazdko_id'];
         $sql = "UPDATE Gniazdka SET state = 1 - state WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $gniazdko_id);
         $stmt->execute();
+
+                // Get the updated state
+        $sql = "SELECT state FROM Gniazdka WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $gniazdko_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $state = $row['state'];
+                
+        $sql = "INSERT INTO `historiauzytkowania`(`Gniazdka_id`, `Data`, `tbl_member_id`, `stan`) VALUES (?, NOW(), ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iii", $gniazdko_id, $user_id, $state);
+        $stmt->execute();    
+
         header("Location: gniazdka.php?room_id=$room_id");
         exit();
     }

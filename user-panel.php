@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION["username"])) {
+if (isset($_SESSION["username"]) && $_SESSION["role"] == "user") {
     $username = $_SESSION["username"];
     session_write_close();
 } else {
@@ -23,12 +23,12 @@ if (isset($_SESSION["username"])) {
 	rel="stylesheet" />
 </HEAD>
 <BODY>
-	<div class="phppot-container">
-		<div class="page-header">
 		<?php
     include 'user-header.php';
+    include 'main-page.php';
 ?>
-		</div>
-	</div>
+
+
+
 </BODY>
 </HTML>

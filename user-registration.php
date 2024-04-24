@@ -9,84 +9,63 @@ if (! empty($_POST["signup-btn"])) {
 <HTML>
 <HEAD>
 <TITLE>User Registration</TITLE>
-<link href="assets/css/phppot-style.css" type="text/css"
-	rel="stylesheet" />
-<link href="assets/css/user-registration.css" type="text/css"
-	rel="stylesheet" />
+<link rel="stylesheet" href="assets\css\bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="assets\css\bootstrap.min.js"></script>
+<script src="assets\css\popper.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+
 <script src="vendor/jquery/jquery-3.3.1.js" type="text/javascript"></script>
 </HEAD>
 <BODY>
-	<div class="phppot-container">
-		<div class="sign-up-container">
-			<div class="login-signup">
-				<a href="index.php">Login</a>
-			</div>
-			<div class="">
-				<form name="sign-up" action="" method="post"
-					onsubmit="return signupValidation()">
-					<div class="signup-heading">Registration</div>
-				<?php
-    if (! empty($registrationResponse["status"])) {
-        ?>
-                    <?php
-        if ($registrationResponse["status"] == "error") {
-            ?>
-				    <div class="server-response error-msg"><?php echo $registrationResponse["message"]; ?></div>
-                    <?php
-        } else if ($registrationResponse["status"] == "success") {
-            ?>
-                    <div class="server-response success-msg"><?php echo $registrationResponse["message"]; ?></div>
-                    <?php
-        }
-        ?>
-				<?php
-    }
-    ?>
-				<div class="error-msg" id="error-msg"></div>
-					<div class="row">
-						<div class="inline-block">
-							<div class="form-label">
-								Username<span class="required error" id="username-info"></span>
-							</div>
-							<input class="input-box-330" type="text" name="username"
-								id="username">
-						</div>
-					</div>
-					<div class="row">
-						<div class="inline-block">
-							<div class="form-label">
-								Email<span class="required error" id="email-info"></span>
-							</div>
-							<input class="input-box-330" type="email" name="email" id="email">
-						</div>
-					</div>
-					<div class="row">
-						<div class="inline-block">
-							<div class="form-label">
-								Password<span class="required error" id="signup-password-info"></span>
-							</div>
-							<input class="input-box-330" type="password"
-								name="signup-password" id="signup-password">
-						</div>
-					</div>
-					<div class="row">
-						<div class="inline-block">
-							<div class="form-label">
-								Confirm Password<span class="required error"
-									id="confirm-password-info"></span>
-							</div>
-							<input class="input-box-330" type="password"
-								name="confirm-password" id="confirm-password">
-						</div>
-					</div>
-					<div class="row">
-						<input class="btn" type="submit" name="signup-btn"
-							id="signup-btn" value="Sign up">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header text-center">
+                    <h4>Rejestracja</h4>
+                    <a href="index.php" class="btn btn-link">Logowanie</a>
+                </div>
+                <div class="card-body">
+                    <form name="sign-up" action="" method="post" onsubmit="return signupValidation()">
+                        <?php
+                        if (!empty($registrationResponse["status"])) {
+                            if ($registrationResponse["status"] == "error") {
+                                ?>
+                                <div class="alert alert-danger"><?php echo $registrationResponse["message"]; ?></div>
+                                <?php
+                            } else if ($registrationResponse["status"] == "success") {
+                                ?>
+                                <div class="alert alert-success"><?php echo $registrationResponse["message"]; ?></div>
+                                <?php
+                            }
+                        }
+                        ?>
+                        <div class="form-group">
+                            <label for="username">Login<span class="required error" id="username-info"></span></label>
+                            <input class="form-control" type="text" name="username" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email<span class="required error" id="email-info"></span></label>
+                            <input class="form-control" type="email" name="email" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-password">Hasło<span class="required error" id="signup-password-info"></span></label>
+                            <input class="form-control" type="password" name="signup-password" id="signup-password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Potwierdź hasło<span class="required error" id="confirm-password-info"></span></label>
+                            <input class="form-control" type="password" name="confirm-password" id="confirm-password">
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-primary btn-block" type="submit" name="signup-btn" id="signup-btn" value="Zarejestruj">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 	<script>
 function signupValidation() {
