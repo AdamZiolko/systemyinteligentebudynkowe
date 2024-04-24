@@ -67,7 +67,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
 }
 ?>
 
-<div class="container">
+<div class="container mt-3">
 
 <div class="page-content mt-5 mb-5">
     <h2 class="font-weight-bold text-primary mt-5">Lista Pomieszczeń</h2>

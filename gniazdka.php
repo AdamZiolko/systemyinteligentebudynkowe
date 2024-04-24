@@ -31,11 +31,26 @@ $result = $conn->query($sql);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obsługa zmiany stanu gniazdka
     if (isset($_POST['gniazdko_id'])) {
+        $username = $_SESSION["username"];
+        $sql = "SELECT id FROM tbl_member WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $user_id = (int) $user['id']; // Fetch the user id as an integer
+        
         $gniazdko_id = $_POST['gniazdko_id'];
         $sql = "UPDATE Gniazdka SET state = 1 - state WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $gniazdko_id);
         $stmt->execute();
+        
+        $sql = "INSERT INTO `historiauzytkowania`(`Gniazdka_id`, `Data`, `tbl_member_id`) VALUES (?, NOW(), ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $gniazdko_id, $user_id);
+        $stmt->execute();    
+
         header("Location: gniazdka.php?room_id=$room_id");
         exit();
     }
