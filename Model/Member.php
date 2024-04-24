@@ -119,6 +119,11 @@ class Member
         return $memberRecord;
     }
 
+    public function execute($query, $paramType, $paramValue)
+    {
+        return $this->ds->execute($query, $paramType, $paramValue);
+    }
+
     /**
      * to login a user
      *
