@@ -45,10 +45,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $gniazdko_id);
         $stmt->execute();
-        
-        $sql = "INSERT INTO `historiauzytkowania`(`Gniazdka_id`, `Data`, `tbl_member_id`) VALUES (?, NOW(), ?)";
+
+                // Get the updated state
+        $sql = "SELECT state FROM Gniazdka WHERE id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $gniazdko_id, $user_id);
+        $stmt->bind_param("i", $gniazdko_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $state = $row['state'];
+                
+        $sql = "INSERT INTO `historiauzytkowania`(`Gniazdka_id`, `Data`, `tbl_member_id`, `stan`) VALUES (?, NOW(), ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iii", $gniazdko_id, $user_id, $state);
         $stmt->execute();    
 
         header("Location: gniazdka.php?room_id=$room_id");

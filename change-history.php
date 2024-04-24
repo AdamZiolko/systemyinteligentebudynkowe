@@ -18,7 +18,7 @@ if (isset($_SESSION["username"]) && $_SESSION["role"] == "admin") {
 
 function getAllHistory() {
     global $conn;
-    $stmt = $conn->prepare("SELECT `id`, `Gniazdka_id`, `Data`, `tbl_member_id` FROM `historiauzytkowania`");
+    $stmt = $conn->prepare("SELECT `id`, `Gniazdka_id`, `Data`, `tbl_member_id`, `stan` FROM `historiauzytkowania`");
     $stmt->execute();
     $result = $stmt->get_result();
     $history = $result->fetch_all(MYSQLI_ASSOC);
@@ -54,6 +54,7 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
                 <th>ID Gniazdka</th>
                 <th>Data</th>
                 <th>ID uzytkownika</th>
+                <th>Stan po zmianie</th>
             </tr>
         </thead>
         <tbody>
@@ -63,6 +64,8 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
                 <td><?php echo $record['Gniazdka_id']; ?></td>
                 <td><?php echo $record['Data']; ?></td>
                 <td><?php echo $record['tbl_member_id']; ?></td>
+                <td><?php echo $record['stan']; ?></td>
+
             </tr>
             <?php endforeach; ?>
         </tbody>
