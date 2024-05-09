@@ -8,6 +8,10 @@ error_reporting(E_ALL);
 $ds = new Phppot\DataSource();
 $conn = $ds->getConnection();
 
+if ($conn === false) {
+    die("ERROR: Could not connect to the database.");
+}
+
 session_start();
 if (isset($_SESSION["username"]) && $_SESSION["role"] == "admin") {
     $username = $_SESSION["username"];
@@ -21,12 +25,15 @@ if (isset($_SESSION["username"]) && $_SESSION["role"] == "admin") {
 
 
 function getRoomList($conn) {
-    $sql = "SELECT l.id, l.name, 
+    $stmt = $conn->prepare("SELECT l.id, l.name, 
             (SELECT COUNT(*) FROM Gniazdka g WHERE g.ListaPomieszczen_id = l.id) as total_outlets, 
             (SELECT COUNT(*) FROM Gniazdka g WHERE g.ListaPomieszczen_id = l.id AND g.state = 1) as active_outlets 
-            FROM ListaPomieszczen l";
-    $result = $conn->query($sql);
-    return $result;
+            FROM ListaPomieszczen l");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $roomList = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $roomList;
 }
 
 function addRoom($conn, $roomName) {
@@ -61,8 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_room"])) {
 }
 
 
-$sql = "SELECT id, name FROM ListaPomieszczen";
-$result = $conn->query($sql);
+// $sql = "SELECT id, name FROM ListaPomieszczen";
+// $result = $conn->query($sql);
 ?>
 
 <HTML>
@@ -106,9 +113,9 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
             <?php 
             $result = getRoomList($conn);
 
-            if ($result->num_rows > 0) {
+            if (count($result) > 0) {
                 // output data of each row
-                while($row = $result->fetch_assoc()) {
+                foreach($result as $row) {
                     echo "<tr>";
                     echo "<td>".$row["id"]."</td>";
                     echo "<td>".$row["name"]."</td>";

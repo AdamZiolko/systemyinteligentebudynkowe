@@ -15,18 +15,31 @@ if (isset($_SESSION["username"]) && $_SESSION["role"] == "admin") {
     header("Location: $url");
 }
 
-$room_id = $_GET['room_id'];
-$room_sql = "SELECT name FROM ListaPomieszczen WHERE id = ?";
-$stmt = $conn->prepare($room_sql);
-$stmt->bind_param("i", $room_id);
-$stmt->execute();
-$room_result = $stmt->get_result();
-$room = $room_result->fetch_assoc();
-$room_name = $room['name'];
-$stmt->close();
+function getRoomName($conn, $room_id) {
+    $room_sql = "SELECT name FROM ListaPomieszczen WHERE id = ?";
+    $stmt = $conn->prepare($room_sql);
+    $stmt->bind_param("i", $room_id);
+    $stmt->execute();
+    $room_result = $stmt->get_result();
+    $room = $room_result->fetch_assoc();
+    $stmt->close();
+    return $room['name'];
+}
 
-$sql = "SELECT id, name, description, properties, state FROM Gniazdka WHERE ListaPomieszczen_id = $room_id";
-$result = $conn->query($sql);
+function getRoomDetails($conn, $room_id) {
+    $sql = "SELECT id, name, description, properties, state FROM Gniazdka WHERE ListaPomieszczen_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $room_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $details = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $details;
+}
+
+$room_id = $_GET['room_id'];
+$room_name = getRoomName($conn, $room_id);
+$room_details = getRoomDetails($conn, $room_id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obsługa zmiany stanu gniazdka
@@ -95,8 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <HTML>
 <HEAD>
 <TITLE>Lista gniazdek</TITLE>
-<!-- <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet" />
-<link href="assets/css/user-registration.css" type="text/css" rel="stylesheet" /> -->
+
 <link rel="stylesheet" href="assets\css\bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="assets\css\bootstrap.min.js"></script>
@@ -129,9 +141,9 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
             </thead>
             <tbody>
                 <?php 
-                if ($result->num_rows > 0) {
+                if (count($room_details) > 0) {
                     // output data of each row
-                    while($row = $result->fetch_assoc()) {
+                    foreach($room_details as $row) {
                         echo "<tr>";
                         echo "<td>".$row["id"]."</td>";
                         echo "<td>".$row["name"]."</td>";

@@ -15,18 +15,31 @@ if (isset($_SESSION["username"]) && $_SESSION["role"] == "user") {
     header("Location: $url");
 }
 
-$room_id = $_GET['room_id'];
-$room_sql = "SELECT name FROM ListaPomieszczen WHERE id = ?";
-$stmt = $conn->prepare($room_sql);
-$stmt->bind_param("i", $room_id);
-$stmt->execute();
-$room_result = $stmt->get_result();
-$room = $room_result->fetch_assoc();
-$room_name = $room['name'];
-$stmt->close();
+function getRoomName($conn, $room_id) {
+    $room_sql = "SELECT name FROM ListaPomieszczen WHERE id = ?";
+    $stmt = $conn->prepare($room_sql);
+    $stmt->bind_param("i", $room_id);
+    $stmt->execute();
+    $room_result = $stmt->get_result();
+    $room = $room_result->fetch_assoc();
+    $stmt->close();
+    return $room['name'];
+}
 
-$sql = "SELECT id, name, description, properties, state FROM Gniazdka WHERE ListaPomieszczen_id = $room_id";
-$result = $conn->query($sql);
+function getRoomDetails($conn, $room_id) {
+    $sql = "SELECT id, name, description, properties, state FROM Gniazdka WHERE ListaPomieszczen_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $room_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $details = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    return $details;
+}
+
+$room_id = $_GET['room_id'];
+$room_name = getRoomName($conn, $room_id);
+$room_details = getRoomDetails($conn, $room_id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obsługa zmiany stanu gniazdka
@@ -104,26 +117,26 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'user') {
             </thead>
             <tbody>
                 <?php 
-                if ($result->num_rows > 0) {
-                    // output data of each row
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>".$row["id"]."</td>";
-                        echo "<td>".$row["name"]."</td>";
-                        echo "<td>".$row["description"]."</td>";
-                        echo "<td>".$row["properties"]."</td>";
-                        echo "<td>".$row["state"]."</td>";
-                        echo "<td>
-                            <form action='gniazdka-user.php?room_id=".$room_id."' method='post'>
-                                <input type='hidden' name='gniazdko_id' value='".$row["id"]."'>
-                                <input type='submit' value='Zmień stan' class='btn btn-primary'>
-                            </form>
-                        </td>";
-                        echo "</tr>";
+                    if (count($room_details) > 0) {
+                        // output data of each row
+                        foreach($room_details as $row) {
+                            echo "<tr>";
+                            echo "<td>".$row["id"]."</td>";
+                            echo "<td>".$row["name"]."</td>";
+                            echo "<td>".$row["description"]."</td>";
+                            echo "<td>".$row["properties"]."</td>";
+                            echo "<td>".$row["state"]."</td>";
+                            echo "<td>
+                                <form action='gniazdka-user.php?room_id=".$room_id."' method='post'>
+                                    <input type='hidden' name='gniazdko_id' value='".$row["id"]."'>
+                                    <input type='submit' value='Zmień stan' class='btn btn-primary'>
+                                </form>
+                            </td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='6'>Brak wyników</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='6'>Brak wyników</td></tr>";
-                }
                 ?>
             </tbody>
         </table>
