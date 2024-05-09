@@ -38,6 +38,22 @@ if (isset($_SESSION['username']) && $_SESSION['role'] == 'user') {
 }
 ?>
 
+<HTML>
+<HEAD>
+<TITLE>Admin Panel</TITLE>
+<!-- <link href="assets/css/phppot-style.css" type="text/css" rel="stylesheet" />
+<link href="assets/css/user-registration.css" type="text/css" rel="stylesheet" /> -->
+<link rel="stylesheet" href="assets\css\bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="assets\css\bootstrap.min.js"></script>
+<script src="assets\css\popper.min.js"></script>
+<script src="assets\css\bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+</HEAD>
+<BODY>
+
 <div class="container">
 
 <div class="page-content mt-5 mb-5">
@@ -86,5 +102,5 @@ $(document).ready( function () {
 
 </div>
 
-</body>
-</html>
+</BODY>
+</HTML>
